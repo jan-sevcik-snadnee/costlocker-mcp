@@ -12,7 +12,6 @@ import {
 import { CostlockerClient } from './costlocker/client.js';
 
 // --- Env validation ---
-const COSTLOCKER_APP_NAME = process.env.COSTLOCKER_APP_NAME || 'costlocker-mcp';
 const COSTLOCKER_API_TOKEN = process.env.COSTLOCKER_API_TOKEN;
 const COSTLOCKER_HOST = process.env.COSTLOCKER_HOST || 'https://rest.costlocker.com';
 
@@ -22,7 +21,6 @@ if (!COSTLOCKER_API_TOKEN) {
 }
 
 const client = new CostlockerClient({
-  appName: COSTLOCKER_APP_NAME,
   apiToken: COSTLOCKER_API_TOKEN,
   host: COSTLOCKER_HOST,
 });

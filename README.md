@@ -11,7 +11,7 @@ MCP server for [Costlocker](https://costlocker.com) — your project management 
 1. Log in to [Costlocker](https://new.costlocker.com)
 2. Click your **name** in the top-right corner and select **Settings**
 3. Go to the **API** tab (or go directly to [new.costlocker.com/settings/api](https://new.costlocker.com/settings/api))
-4. Create a new token — use **`costlocker-mcp`** as the App name and copy the generated **API token**
+4. Copy your **personal access token** (click "Zkopírovat do schránky" or "Regenerate token" if you don't have one yet)
 
 ### 2. Configure your MCP client
 
@@ -72,7 +72,6 @@ All tool names are prefixed with `costlocker_` (e.g. `costlocker_list_projects`)
 | Environment variable | Required | Description |
 |---|---|---|
 | `COSTLOCKER_API_TOKEN` | Yes | Personal access token from Costlocker API settings |
-| `COSTLOCKER_APP_NAME` | No | App name used when creating the token (default: `costlocker-mcp`) |
 | `COSTLOCKER_HOST` | No | API host (default: `https://rest.costlocker.com`) |
 
 ## License

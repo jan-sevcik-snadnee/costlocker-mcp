@@ -1,5 +1,4 @@
 interface CostlockerConfig {
-  appName: string;
   apiToken: string;
   host: string;
 }
@@ -43,7 +42,7 @@ export class CostlockerClient {
   }
 
   private get authHeader(): string {
-    const credentials = `${this.config.appName}:${this.config.apiToken}`;
+    const credentials = `costlocker-mcp:${this.config.apiToken}`;
     const encoded = Buffer.from(credentials).toString('base64');
     return `Basic ${encoded}`;
   }

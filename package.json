@@ -1,6 +1,6 @@
 {
   "name": "costlocker-mcp",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Costlocker integration via Model Context Protocol (MCP) for AI-powered project management",
   "main": "dist/index.js",
   "bin": {
