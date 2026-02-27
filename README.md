@@ -1,32 +1,28 @@
 # costlocker-mcp
 
-MCP server for [Costlocker](https://costlocker.com) integration with Claude Desktop. Allows Claude to read and manage projects, timesheets, people, and financial data via the Costlocker API.
+MCP server that connects [Claude](https://claude.ai) to [Costlocker](https://costlocker.com) — your project management and time tracking tool. Ask Claude about your projects, budgets, timesheets, and more. Directly from Claude Desktop.
 
-## Installation
+## Quick start
 
-```bash
-npm install -g costlocker-mcp
-```
+### 1. Get your API token from Costlocker
 
-Or run directly with npx:
+> Only the account **Owner** can create API tokens. See the [step-by-step guide with screenshots](https://help.costlocker.com/settings/api).
 
-```bash
-npx costlocker-mcp
-```
+1. Log in to [Costlocker](https://new.costlocker.com)
+2. Click your **name** in the top-right corner and select **Settings**
+3. Go to the **API** tab (or go directly to [new.costlocker.com/settings/api](https://new.costlocker.com/settings/api))
+4. Create a new token — you'll get an **App name** and an **API token**
 
-## Setup
+Keep both values, you'll need them in the next step.
 
-### 1. Get Costlocker API credentials
+### 2. Add to Claude Desktop
 
-You need a **Personal Access Token** from Costlocker:
+Open your Claude Desktop configuration file:
 
-1. Log in to Costlocker
-2. Go to **Settings > API > Personal access tokens**
-3. Create a new token and note the **App name** and **Token**
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-### 2. Configure Claude Desktop
-
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+Add the `costlocker` server:
 
 ```json
 {
@@ -43,56 +39,45 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 }
 ```
 
+Replace `your-app-name` and `your-api-token` with the values from step 1.
+
 ### 3. Restart Claude Desktop
 
-The server verifies your credentials on startup via the `/me` endpoint. If the token is invalid, it will fail immediately with an error message.
+That's it. Claude now has access to your Costlocker data. Try asking:
 
-## Available tools
+- *"Show me all running projects"*
+- *"How many hours did I log this week?"*
+- *"What's the budget status of project X?"*
 
-### Projects
-- `costlocker_list_projects` - List projects (filter by client, state)
-- `costlocker_get_project` - Get project detail
-- `costlocker_search_projects` - Search projects by name
-- `costlocker_create_project` - Create a new project
-- `costlocker_update_project` - Update project (name, dates, state, tags)
+## What can it do?
 
-### Timesheets
-- `costlocker_log_time` - Log a time entry
-- `costlocker_get_timesheet` - Get timesheet entries
-- `costlocker_get_monthly_timesheet` - Get monthly aggregated data
-- `costlocker_get_running_entry` - Get currently running entry
-- `costlocker_get_assignments` - Get available assignments
+| Category | Tools | Description |
+|---|---|---|
+| **Projects** | `list_projects`, `get_project`, `search_projects` | Browse and search projects |
+| | `create_project`, `update_project` | Create or update projects (with confirmation) |
+| **Timesheets** | `log_time` | Log time entries (with confirmation) |
+| | `get_timesheet`, `get_monthly_timesheet` | View timesheet data |
+| | `get_running_entry`, `get_assignments` | Check running timer and available assignments |
+| **People** | `list_people`, `get_me`, `get_project_people` | View team members and assignments |
+| **Finance** | `get_project_budget`, `get_project_billing`, `get_project_expenses` | View budgets, billing, and expenses |
+| **Lookup** | `list_clients`, `list_activities`, `list_tags`, `list_groups` | Browse reference data |
 
-### People
-- `costlocker_list_people` - List all people
-- `costlocker_get_me` - Get current user info
-- `costlocker_get_project_people` - Get people assigned to a project
-
-### Finance
-- `costlocker_get_project_budget` - Get project budget
-- `costlocker_get_project_billing` - Get project billing items
-- `costlocker_get_project_expenses` - Get project expenses
-
-### Lookup
-- `costlocker_list_clients` - List all clients
-- `costlocker_list_activities` - List all activities
-- `costlocker_list_tags` - List all tags
-- `costlocker_list_groups` - List all groups
+All tool names are prefixed with `costlocker_` (e.g. `costlocker_list_projects`).
 
 ## Security
 
-- Write operations (`create_project`, `update_project`, `log_time`) are marked with `destructiveHint: true` so Claude will ask for confirmation before executing them
-- Input validation via Zod on all mutation endpoints
-- API access is controlled by your personal access token - you only see data you have permission to access
-- Error messages are sanitized to prevent leaking sensitive API response data
-- List responses are truncated to 200 items to prevent context overflow
+- **Write operations** (`create_project`, `update_project`, `log_time`) require user confirmation — Claude will always ask before making changes
+- **Input validation** on all write operations (Zod schemas)
+- **Access control** is handled by your personal API token — you only see data your Costlocker role allows
+- **Credential check** on startup via `/me` endpoint — invalid tokens fail immediately
+- **Error sanitization** — API error responses are truncated to prevent leaking sensitive data
 
-## Environment variables
+## Configuration
 
-| Variable | Required | Description |
+| Environment variable | Required | Description |
 |---|---|---|
-| `COSTLOCKER_APP_NAME` | Yes | Your Costlocker API app name |
-| `COSTLOCKER_API_TOKEN` | Yes | Your personal access token |
+| `COSTLOCKER_APP_NAME` | Yes | App name from Costlocker API settings |
+| `COSTLOCKER_API_TOKEN` | Yes | Personal access token from Costlocker API settings |
 | `COSTLOCKER_HOST` | No | API host (default: `https://rest.costlocker.com`) |
 
 ## License
