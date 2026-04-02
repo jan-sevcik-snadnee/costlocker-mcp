@@ -58,8 +58,8 @@ import {
 } from './tools/people.js';
 
 import {
-  getProjectBudgetTool, getProjectBillingTool, getProjectExpensesTool,
-  handleGetProjectBudget, handleGetProjectBilling, handleGetProjectExpenses,
+  getProjectBudgetTool, getProjectBillingTool, getProjectExpensesTool, updateProjectBillingTool,
+  handleGetProjectBudget, handleGetProjectBilling, handleGetProjectExpenses, handleUpdateProjectBilling,
 } from './tools/finance.js';
 
 import {
@@ -100,6 +100,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     getProjectBudgetTool,
     getProjectBillingTool,
     getProjectExpensesTool,
+    updateProjectBillingTool,
     // Timesheet
     logTimeTool,
     getTimesheetTool,
@@ -133,6 +134,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     case 'costlocker_get_project_budget': return handleGetProjectBudget(client, a);
     case 'costlocker_get_project_billing': return handleGetProjectBilling(client, a);
     case 'costlocker_get_project_expenses': return handleGetProjectExpenses(client, a);
+    case 'costlocker_update_project_billing': return handleUpdateProjectBilling(client, a);
     // Timesheet
     case 'costlocker_log_time': return handleLogTime(client, a);
     case 'costlocker_get_timesheet': return handleGetTimesheet(client, a);
