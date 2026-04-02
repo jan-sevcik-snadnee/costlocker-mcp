@@ -284,8 +284,15 @@ export async function handleUpdateProject(client: CostlockerClient, args: Record
     if (parsed.name) project.name = parsed.name;
     if (parsed.date_start) project.date_start = parsed.date_start;
     if (parsed.date_end) project.date_end = parsed.date_end;
-    if (parsed.state) project.state = parsed.state;
     if (parsed.tags) project.tags = parsed.tags.map(t => ({ name: t }));
+
+    // State changes use "action" field, not "state"
+    // Valid actions: upsert (default), finish, reopen, delete, duplicate
+    if (parsed.state === 'finished') {
+      project.action = 'finish';
+    } else if (parsed.state === 'running') {
+      project.action = 'reopen';
+    }
 
     const data = await client.restPost('/projects/', [project]);
     return {
